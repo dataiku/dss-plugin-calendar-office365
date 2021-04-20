@@ -2,7 +2,11 @@
 
 # import the base class for the custom dataset
 from six.moves import xrange
+from dku_common import get_token_from_config, assert_no_temporal_paradox
+from microsoft_calendar_client import MicrosoftCalendarClient
 from dataiku.connector import Connector
+import logging
+import datetime
 
 """
 A custom Python dataset is a subclass of Connector.
@@ -17,7 +21,7 @@ class MicrosoftCalendarEventConnector(Connector):
     def __init__(self, config, plugin_config):
         Connector.__init__(self, config, plugin_config)
         access_token = get_token_from_config(config)
-        self.client = GoogleCalendarClient(access_token)
+        self.client = MicrosoftCalendarClient(access_token)
         self.from_date = self.config.get("from_date", None)
         self.to_date = self.config.get("to_date", None)
         assert_no_temporal_paradox(self.from_date, self.to_date)
@@ -32,18 +36,17 @@ class MicrosoftCalendarEventConnector(Connector):
         return None
 
     def generate_rows(self, dataset_schema=None, dataset_partitioning=None,
-                            partition_id=None, records_limit = -1):
-        first_call = True
-        if first_call:
-            first_call = False
-            events = self.client.get_events(
+                            partition_id=None, records_limit=-1):
+
+        events = self.client.get_events(
                 from_date=self.from_date,
                 to_date=self.to_date,
-                calendar_id=self.calendar_id,
-                records_limit=records_limit
+                calendar_id=self.calendar_id
             )
-            for event in events:
-                yield {"api_output": event}
+        print("events is the following:")
+        print(events)
+        for event in events['events']:
+            yield {"api_output": event}
 
     def get_writer(self, dataset_schema=None, dataset_partitioning=None,
                          partition_id=None):
