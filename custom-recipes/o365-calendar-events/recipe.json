@@ -1,127 +1,74 @@
-// This file is the descriptor for the Custom code recipe o365-calendar-events
+
 {
-    // Meta data for display purposes
     "meta": {
-        // label: name of the recipe as displayed, should be short
-        "label": "O365 calendar events",
-        // description: longer string to help end users understand what this recipe does
-        "description": "",
-        // icon: must be one of the FontAwesome 3.2.1 icons, complete list here at https://fontawesome.com/v3.2.1/icons/
-        "icon": "icon-puzzle-piece"
+        "label": "Calendar events",
+        "description": "Retrieve events from your Microsoft Office Calendar based on parameters of an existing dataset",
+        "icon": "icon-calendar"
     },
-
     "kind": "PYTHON",
-    
-
-    // Inputs and outputs are defined by roles. In the recipe's I/O tab, the user can associate one
-    // or more dataset to each input and output role.
-
-    // The "arity" field indicates whether the user can associate several datasets to the role ('NARY')
-    // or at most one ('UNARY'). The "required" field indicates whether the user is allowed to
-    // associate no dataset with the role.
-
     "inputRoles": [
         {
-            "name": "input_A_role",
-            "label": "input A displayed name",
-            "description": "what input A means",
+            "name": "input_dataset_name",
+            "label": "Dataset containing variables",
+            "description": "",
             "arity": "UNARY",
             "required": true,
             "acceptsDataset": true
-        },
-        {
-            "name": "input_B_role",
-            "label": "input B displayed name",
-            "description": "what input B means",
-            "arity": "NARY",
-            "required": false,
-            "acceptsDataset": true
-            // ,'mustBeSQL': true
-            // ,'mustBeStrictlyType':'HDFS'
         }
-        // ...
     ],
 
     "outputRoles": [
         {
-            "name": "main_output",
-            "label": "main output displayed name",
-            "description": "what main output means",
+            "name": "api_output",
+            "label": "Events",
+            "description": "",
             "arity": "UNARY",
-            "required": false,
-            "acceptsDataset": true
-        },
-        {
-            "name": "errors_output",
-            "label": "errors output displayed name",
-            "description": "what errors output means",
-            "arity": "UNARY",
-            "required": false,
+            "required": true,
             "acceptsDataset": true
         }
-        // ...
     ],
-
-    /* The field "params" holds a list of all the params
-       for wich the user will be prompted for values in the Settings tab of the recipe.
-
-       The available parameter types include:
-       STRING, STRINGS, INT, DOUBLE, BOOLEAN, SELECT, MULTISELECT, MAP, TEXTAREA, PRESET, COLUMN, COLUMNS
-
-       For the full list and for more details, see the documentation: https://doc.dataiku.com/dss/latest/plugins/reference/params.html
-    */
-
     "params": [
         {
-            "name": "parameter1",
-            "label": "User-readable label",
-            "type": "STRING",
-            "description": "Some documentation for parameter1",
-            "mandatory": true
+            "type": "SEPARATOR",
+            "label": "Authentication"
         },
         {
-            "name": "parameter2",
-            "type": "INT",
-            "defaultValue": 42
-            /* Note that standard json parsing will return it as a double in Python (instead of an int), so you need to write
-               int(get_recipe_config()['parameter2'])
-            */
+            "name": "oauth_credentials",
+            "label": "Google Single Sign On",
+            "type": "PRESET",
+            "parameterSetId": "oauth-credentials"
         },
-
-        // A "SELECT" parameter is a multi-choice selector. Choices are specified using the selectChoice field
         {
-            "name": "parameter3",
-            "type": "SELECT",
-            "selectChoices": [
-                {
-                    "value": "val_x",
-                    "label": "display name for val_x"
-                },
-                {
-                    "value": "val_y",
-                    "label": "display name for val_y"
-                }
-            ]
+            "type": "SEPARATOR",
+            "label": "Columns mappings"
         },
-
-        // A 'COLUMN' parameter is a string, whose value is a column name from an input schema.
-        // To specify the input schema whose column names are used, use the "columnRole" field like below.
-        // The column names will come from the schema of the first dataset associated to that role.
         {
-            "name": "parameter4",
+            "name": "calendar_id_column",
+            "label": "Column with Calendar IDs",
+            "description": "If empty, events will be collected from \"primary\" ",
             "type": "COLUMN",
-            "columnRole": "input_B_role"
+            "columnRole": "input_dataset_name"
+        },
+        {
+            "name": "from_date_column",
+            "label": "Column with start dates",
+            "description": "Optional",
+            "type": "COLUMN",
+            "allowedColumnTypes": [
+                "date"
+            ],
+            "columnRole": "input_dataset_name"
+        },
+        {
+            "name": "to_date_column",
+            "label": "Column with end dates",
+            "description": "Optional",
+            "type": "COLUMN",
+            "allowedColumnTypes": [
+                "date"
+            ],
+            "columnRole": "input_dataset_name"
         }
-
-        // The 'COLUMNS' type works in the same way, except that it is a list of strings.
     ],
-
-    // The field "resourceKeys" holds a list of keys that allows to limit the number
-    // of concurrent executions and activities triggered by this recipe.
-    //
-    // Administrators can configure the limit per resource key in the Administration > Settings > Flow build
-    // screen.
-
     "resourceKeys": []
-
 }

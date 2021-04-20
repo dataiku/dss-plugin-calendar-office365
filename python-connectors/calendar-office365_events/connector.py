@@ -12,58 +12,38 @@ specified in the connector.json file.
 
 Note: the name of the class itself is not relevant.
 """
-class MyConnector(Connector):
+class MicrosoftCalendarEventConnector(Connector):
 
     def __init__(self, config, plugin_config):
-        """
-        The configuration parameters set up by the user in the settings tab of the
-        dataset are passed as a json object 'config' to the constructor.
-        The static configuration parameters set up by the developer in the optional
-        file settings.json at the root of the plugin directory are passed as a json
-        object 'plugin_config' to the constructor
-        """
-        Connector.__init__(self, config, plugin_config)  # pass the parameters to the base class
+        Connector.__init__(self, config, plugin_config)
+        access_token = get_token_from_config(config)
+        self.client = GoogleCalendarClient(access_token)
+        self.from_date = self.config.get("from_date", None)
+        self.to_date = self.config.get("to_date", None)
+        assert_no_temporal_paradox(self.from_date, self.to_date)
+        self.calendar_id = self.config.get("calendar_id", None)
 
         # perform some more initialization
         self.theparam1 = self.config.get("parameter1", "defaultValue")
 
     def get_read_schema(self):
-        """
-        Returns the schema that this connector generates when returning rows.
-
-        The returned schema may be None if the schema is not known in advance.
-        In that case, the dataset schema will be infered from the first rows.
-
-        If you do provide a schema here, all columns defined in the schema
-        will always be present in the output (with None value),
-        even if you don't provide a value in generate_rows
-
-        The schema must be a dict, with a single key: "columns", containing an array of
-        {'name':name, 'type' : type}.
-
-        Example:
-            return {"columns" : [ {"name": "col1", "type" : "string"}, {"name" :"col2", "type" : "float"}]}
-
-        Supported types are: string, int, bigint, float, double, date, boolean
-        """
-
         # In this example, we don't specify a schema here, so DSS will infer the schema
         # from the columns actually returned by the generate_rows method
         return None
 
     def generate_rows(self, dataset_schema=None, dataset_partitioning=None,
                             partition_id=None, records_limit = -1):
-        """
-        The main reading method.
-
-        Returns a generator over the rows of the dataset (or partition)
-        Each yielded row must be a dictionary, indexed by column name.
-
-        The dataset schema and partitioning are given for information purpose.
-        """
-        for i in xrange(1,10):
-            yield { "first_col" : str(i), "my_string" : "Yes" }
-
+        first_call = True
+        if first_call:
+            first_call = False
+            events = self.client.get_events(
+                from_date=self.from_date,
+                to_date=self.to_date,
+                calendar_id=self.calendar_id,
+                records_limit=records_limit
+            )
+            for event in events:
+                yield {"api_output": event}
 
     def get_writer(self, dataset_schema=None, dataset_partitioning=None,
                          partition_id=None):

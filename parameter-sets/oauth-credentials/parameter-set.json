@@ -18,10 +18,9 @@
             "type": "CREDENTIAL_REQUEST",
             "credentialRequestSettings": {
                 "type": "OAUTH2",
-                "oauth2Flow": "authorization_code",
-                "authorizationEndpoint": "https://login.microsoftonline.com/common/oauth2/authorize",
-                "tokenEndpoint": "https://login.microsoftonline.com/common/oauth2/token",
-                "scope": "Calendars.Read Calendars.Write"
+                "authorizationEndpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+                "tokenEndpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+                "scope": "Calendars.ReadWrite offline_access"
             }
         }
     ]
