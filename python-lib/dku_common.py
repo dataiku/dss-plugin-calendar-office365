@@ -1,4 +1,5 @@
 import pandas
+import datetime
 
 def get_token_from_config(config):
     oauth_credentials = config.get("oauth_credentials")
@@ -33,3 +34,6 @@ def assert_no_temporal_paradox(from_date, to_date):
         to_datetime = get_datetime_from_iso_string(to_date)
         if from_datetime > to_datetime:
             raise ValueError("The 'To' date currently set is before the 'From' date")
+
+def get_datetime_from_iso_string(iso_string):
+    return datetime.datetime.strptime(iso_string, "%Y-%m-%dT%H:%M:%S.%fZ")

@@ -18,12 +18,11 @@ class MicrosoftCalendarClient():
         self.number_retrieved_events = 0
 
     def get_events(self, from_date=None, to_date=None, calendar_id=None, can_raise=True):
-        if isinstance(calendar_id, str) & len(calendar_id)>10:
+        if isinstance(calendar_id, str):
             self.base_url = "https://graph.microsoft.com/v1.0/me/calendars/{}/events?startDateTime={}&endDateTime={}".format(calendar_id, from_date, to_date)
         else:
             self.base_url = "https://graph.microsoft.com/v1.0/me/calendar/events?startDateTime={}&endDateTime={}".format(from_date, to_date)
 
-        print(self.base_url)
         events_result = requests.get(self.base_url, headers=self.headers).json()
 
         try:
@@ -32,10 +31,10 @@ class MicrosoftCalendarClient():
             logging.error("Microsoft Client Error : {}".format(err))
             if can_raise:
                 try:
-                    error_message = events_result['error']['code']
-                    raise MicrosoftCalendarClientError("Error: {}".format(error_message))
+                    err = events_result['error']['code']
                 except:
-                    raise MicrosoftCalendarClientError("Error: {}".format(err))
+                    pass
+                raise MicrosoftCalendarClientError("Error: {}".format(err))
             else:
                 return ["api error : {}".format(err)]
         data = {}

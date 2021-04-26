@@ -1,21 +1,11 @@
 # This file is the actual code for the custom Python dataset calendar-office365_events
-
 # import the base class for the custom dataset
-from six.moves import xrange
+
 from dku_common import get_token_from_config, assert_no_temporal_paradox
 from microsoft_calendar_client import MicrosoftCalendarClient
 from dataiku.connector import Connector
 import logging
-import datetime
 
-"""
-A custom Python dataset is a subclass of Connector.
-
-The parameters it expects and some flags to control its handling by DSS are
-specified in the connector.json file.
-
-Note: the name of the class itself is not relevant.
-"""
 class MicrosoftCalendarEventConnector(Connector):
 
     def __init__(self, config, plugin_config):
@@ -27,8 +17,6 @@ class MicrosoftCalendarEventConnector(Connector):
         assert_no_temporal_paradox(self.from_date, self.to_date)
         self.calendar_id = self.config.get("calendar_id", None)
 
-        # perform some more initialization
-        self.theparam1 = self.config.get("parameter1", "defaultValue")
 
     def get_read_schema(self):
         # In this example, we don't specify a schema here, so DSS will infer the schema
@@ -43,8 +31,6 @@ class MicrosoftCalendarEventConnector(Connector):
                 to_date=self.to_date,
                 calendar_id=self.calendar_id
             )
-        print("events is the following:")
-        print(events)
         for event in events['events']:
             yield {"api_output": event}
 
