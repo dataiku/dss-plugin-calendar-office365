@@ -18,10 +18,10 @@ class MicrosoftCalendarClient():
         self.number_retrieved_events = 0
 
     def get_events(self, from_date=None, to_date=None, calendar_id=None, can_raise=True):
-        if isinstance(calendar_id, str):
-            self.base_url = "https://graph.microsoft.com/v1.0/me/calendars/{}/events?startDateTime={}&endDateTime={}".format(calendar_id, from_date, to_date)
+        if calendar_id:
+            self.base_url = "https://graph.microsoft.com/v1.0/me/calendars/{}/calendarView?startDateTime={}&endDateTime={}".format(calendar_id, from_date, to_date)
         else:
-            self.base_url = "https://graph.microsoft.com/v1.0/me/calendar/events?startDateTime={}&endDateTime={}".format(from_date, to_date)
+            self.base_url = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime={}&endDateTime={}".format(from_date, to_date)
 
         events_result = requests.get(self.base_url, headers=self.headers).json()
 
@@ -37,12 +37,12 @@ class MicrosoftCalendarClient():
                 raise MicrosoftCalendarClientError("Error: {}".format(err))
             else:
                 return ["api error : {}".format(err)]
-        data = {}
-        data['events'] = [event['subject'] for event in events]
-        data['start'] = [event['start']['dateTime'] for event in events]
-        data['end'] = [event['end']['dateTime'] for event in events]
-        data['link'] = [event['webLink'] for event in events]
+        # data = {}
+        # data['events'] = [event['subject'] for event in events]
+        # data['start'] = [event['start']['dateTime'] for event in events]
+        # data['end'] = [event['end']['dateTime'] for event in events]
+        # data['link'] = [event['webLink'] for event in events]
 
-        self.number_retrieved_events += len(data['events'])
-        logger.info("{} events retrieved, {} in total".format(len(data['events']), self.number_retrieved_events))
-        return data
+        self.number_retrieved_events += len(events)
+        logger.info("{} events retrieved, {} in total".format(len(events), self.number_retrieved_events))
+        return events

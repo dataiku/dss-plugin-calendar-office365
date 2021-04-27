@@ -33,16 +33,16 @@ input_dataset = dataiku.Dataset(input_dataset_name[0])
 input_df = input_dataset.get_dataframe()
 logger.info("{} line(s) to process".format(len(input_df)))
 
-data = {}
+events = []
 for index, input_parameters_row in input_df.iterrows():
     calendar_id = input_parameters_row.get(calendar_id_column, None)
     from_date = get_iso_format(input_parameters_row.get(start_time)) if start_time else None
     to_date = get_iso_format(input_parameters_row.get(end_time)) if end_time else None
-    data = extend(data,
+    events.extend(
         client.get_events(from_date=from_date, to_date=to_date, calendar_id=calendar_id)
             )
 
-calendar_events_df = pd.DataFrame(data)
+calendar_events_df = pd.DataFrame(events)
 
 if calendar_events_df.size > 0:
     output_names_stats = get_output_names_for_role('api_output')

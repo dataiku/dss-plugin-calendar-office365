@@ -17,7 +17,6 @@ class MicrosoftCalendarEventConnector(Connector):
         assert_no_temporal_paradox(self.from_date, self.to_date)
         self.calendar_id = self.config.get("calendar_id", None)
 
-
     def get_read_schema(self):
         # In this example, we don't specify a schema here, so DSS will infer the schema
         # from the columns actually returned by the generate_rows method
@@ -31,7 +30,7 @@ class MicrosoftCalendarEventConnector(Connector):
                 to_date=self.to_date,
                 calendar_id=self.calendar_id
             )
-        for event in events['events']:
+        for event in events:
             yield {"api_output": event}
 
     def get_writer(self, dataset_schema=None, dataset_partitioning=None,
