@@ -1,7 +1,7 @@
 # This file is the actual code for the custom Python dataset calendar-office365_events
 # import the base class for the custom dataset
 
-from dku_common import get_token_from_config, assert_no_temporal_paradox
+from dku_common import get_token_from_config, assert_no_temporal_paradox, extract_start_end_date
 from microsoft_calendar_client import MicrosoftCalendarClient
 from dataiku.connector import Connector
 import logging
@@ -16,6 +16,7 @@ class MicrosoftCalendarEventConnector(Connector):
         self.to_date = self.config.get("to_date", None)
         assert_no_temporal_paradox(self.from_date, self.to_date)
         self.calendar_id = self.config.get("calendar_id", None)
+        self.raw_results = self.config.get("raw_results", False)
 
     def get_read_schema(self):
         # In this example, we don't specify a schema here, so DSS will infer the schema
@@ -24,14 +25,15 @@ class MicrosoftCalendarEventConnector(Connector):
 
     def generate_rows(self, dataset_schema=None, dataset_partitioning=None,
                             partition_id=None, records_limit=-1):
-
+        if not self.calendar_id:
+            self.calendar_id = None
         events = self.client.get_events(
                 from_date=self.from_date,
                 to_date=self.to_date,
                 calendar_id=self.calendar_id
             )
         for event in events:
-            yield {"api_output": event}
+            yield {"api_output": event} if self.raw_results else extract_start_end_date(event)
 
     def get_writer(self, dataset_schema=None, dataset_partitioning=None,
                          partition_id=None):

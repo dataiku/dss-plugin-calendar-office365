@@ -37,3 +37,14 @@ def assert_no_temporal_paradox(from_date, to_date):
 
 def get_datetime_from_iso_string(iso_string):
     return datetime.datetime.strptime(iso_string, "%Y-%m-%dT%H:%M:%S.%fZ")
+
+def extract_start_end_date(event):
+    start = event.pop("start", None)
+    if start:
+        event["start_dateTime"] = start.get("dateTime")
+        event["start_timeZone"] = start.get("timeZone", "")
+    end = event.pop("end", None)
+    if end:
+        event["end_dateTime"] = end.get("dateTime")
+        event["end_timeZone"] = end.get("timeZone", "")
+    return event
