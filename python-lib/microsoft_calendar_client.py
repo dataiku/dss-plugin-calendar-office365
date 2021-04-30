@@ -16,14 +16,31 @@ class MicrosoftCalendarClient():
         self.headers = {'Authorization' : 'Bearer {}'.format(self.access_token)}
         logger.info("Microsoft credentials retrieved")
         self.number_retrieved_events = 0
+        self.next_page_token = None
+        self.first_call = True
 
-    def get_events(self, from_date=None, to_date=None, calendar_id=None, can_raise=True):
-        if calendar_id:
-            self.base_url = "https://graph.microsoft.com/v1.0/me/calendars/{}/calendarView?startDateTime={}&endDateTime={}".format(calendar_id, from_date, to_date)
+    def build_url(self, from_date, to_date, calendar_id):
+        if not self.next_page_token:
+            if isinstance(calendar_id, str):
+                self.base_url = "https://graph.microsoft.com/v1.0/me/calendars/{}/calendarView?startDateTime={}&endDateTime={}".format(calendar_id, from_date, to_date)
+            else:
+                self.base_url = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime={}&endDateTime={}".format(from_date, to_date)
         else:
-            self.base_url = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime={}&endDateTime={}".format(from_date, to_date)
+            self.base_url = self.next_page_token
 
+    def get_next_page_token_if_exist(self, events_result):
+        try:
+            self.next_page_token = events_result['@odata.nextLink']
+        except:
+            self.next_page_token = None
+
+    def reset_next_page_token(self):
+        self.next_page_token = None
+
+    def get_events(self, from_date, to_date, calendar_id, max_results, can_raise=True):
+        self.build_url(from_date, to_date, calendar_id)
         events_result = requests.get(self.base_url, headers=self.headers).json()
+        self.get_next_page_token_if_exist(events_result)
 
         try:
             events = events_result['value']
@@ -37,12 +54,10 @@ class MicrosoftCalendarClient():
                 raise MicrosoftCalendarClientError("Error: {}".format(err))
             else:
                 return ["api error : {}".format(err)]
-        # data = {}
-        # data['events'] = [event['subject'] for event in events]
-        # data['start'] = [event['start']['dateTime'] for event in events]
-        # data['end'] = [event['end']['dateTime'] for event in events]
-        # data['link'] = [event['webLink'] for event in events]
 
         self.number_retrieved_events += len(events)
         logger.info("{} events retrieved, {} in total".format(len(events), self.number_retrieved_events))
         return events
+
+    def has_more_events(self):
+        return self.next_page_token is not None

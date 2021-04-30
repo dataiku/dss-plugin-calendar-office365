@@ -22,6 +22,7 @@ access_token = get_token_from_config(config)
 calendar_id_column = config.get("calendar_id_column", None)
 start_time = config.get("from_date_column", None)
 end_time = config.get("to_date_column", None)
+max_results = config.get("max_results")
 
 
 logger.info("Retrieving Microsoft Calendar events using columns id '{}', from '{}' to '{}'".format(calendar_id_column, start_time, end_time))
@@ -38,9 +39,14 @@ for index, input_parameters_row in input_df.iterrows():
     calendar_id = input_parameters_row.get(calendar_id_column, None)
     from_date = get_iso_format(input_parameters_row.get(start_time)) if start_time else None
     to_date = get_iso_format(input_parameters_row.get(end_time)) if end_time else None
-    events.extend(
-        client.get_events(from_date=from_date, to_date=to_date, calendar_id=calendar_id)
-            )
+
+    first_call = True
+    client.reset_next_page_token()
+    while first_call or client.has_more_events():
+        first_call = False
+        events.extend(
+            client.get_events(from_date=from_date, to_date=to_date, calendar_id=calendar_id, max_results=max_results)
+                )
 
 calendar_events_df = pd.DataFrame(events)
 

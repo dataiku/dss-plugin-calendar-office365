@@ -17,19 +17,27 @@
           "type": "STRING",
           "name": "calendar_id",
           "label": "Calendar ID",
-          "defaultValue": "primary"
+          "defaultValue": ""
         },
         {
           "type": "DATE",
           "name": "from_date",
           "label": "From",
-          "description": "Optional"
+          "description": "Mandatory"
         },
         {
           "type": "DATE",
           "name": "to_date",
           "label": "To",
-          "description": "Optional"
+          "description": "Mandatory"
+        },
+        {
+          "type": "INT",
+          "name": "max_results",
+          "label": "Max results",
+          "description": "(Optional)",
+          "defaultValue": -1,
+          "visibilityCondition": false
         }
     ]
 }

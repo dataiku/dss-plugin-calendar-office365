@@ -68,6 +68,14 @@
                 "date"
             ],
             "columnRole": "input_dataset_name"
+        },
+        {
+          "type": "INT",
+          "name": "max_results",
+          "label": "Max results",
+          "description": "(Optional)",
+          "defaultValue": -1,
+          "visibilityCondition": false
         }
     ],
     "resourceKeys": []
