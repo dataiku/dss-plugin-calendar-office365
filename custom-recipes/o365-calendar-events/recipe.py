@@ -6,7 +6,7 @@ import requests
 from microsoft_calendar_client import MicrosoftCalendarClient
 
 from dataiku.customrecipe import get_input_names_for_role, get_recipe_config, get_output_names_for_role
-from dku_common import get_token_from_config, get_iso_format, extend
+from dku_common import get_token_from_config, get_iso_format
 
 
 logger = logging.getLogger(__name__)

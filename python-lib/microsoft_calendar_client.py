@@ -21,13 +21,9 @@ class MicrosoftCalendarClient():
 
     def build_url(self, from_date, to_date, calendar_id):
         if not self.next_page_token:
-            print("CALENDAR ID IS FOLLOWING")
-            print(calendar_id)
             if isinstance(calendar_id, str):
-                print("IS STR")
                 self.base_url = "https://graph.microsoft.com/v1.0/me/calendars/{}/calendarView?startDateTime={}&endDateTime={}".format(calendar_id, from_date, to_date)
             else:
-                print("NOT STR")
                 self.base_url = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime={}&endDateTime={}".format(from_date, to_date)
         else:
             self.base_url = self.next_page_token
@@ -41,7 +37,7 @@ class MicrosoftCalendarClient():
     def reset_next_page_token(self):
         self.next_page_token = None
 
-    def get_events(self, from_date, to_date, calendar_id, can_raise=True):
+    def get_events(self, from_date, to_date, calendar_id, can_raise=True, max_results=-1):
         self.build_url(from_date, to_date, calendar_id)
         events_result = requests.get(self.base_url, headers=self.headers).json()
         self.get_next_page_token_if_exist(events_result)
