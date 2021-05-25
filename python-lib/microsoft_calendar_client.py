@@ -29,32 +29,24 @@ class MicrosoftCalendarClient():
             self.base_url = self.next_page_token
 
     def get_next_page_token_if_exist(self, events_result):
-        try:
-            self.next_page_token = events_result['@odata.nextLink']
-        except:
-            self.next_page_token = None
+        self.next_page_token = events_result.get('@odata.nextLink')
 
     def reset_next_page_token(self):
         self.next_page_token = None
 
     def get_events(self, from_date, to_date, calendar_id, can_raise=True, max_results=-1):
         self.build_url(from_date, to_date, calendar_id)
-        events_result = requests.get(self.base_url, headers=self.headers).json()
+        response = requests.get(self.base_url, headers=self.headers)
+        events_result = response.json()
         self.get_next_page_token_if_exist(events_result)
 
-        try:
-            events = events_result['value']
-        except Exception as err:
-            logging.error("Microsoft Client Error : {}".format(err))
-            if can_raise:
-                try:
-                    err = events_result['error']['code']
-                except:
-                    pass
-                raise MicrosoftCalendarClientError("Error: {}".format(err))
+        events = events_result.get('value')
+        if response.status_code != 200:
+            if response == 401:
+                error = "Unvalid authentication credentials for the target resource"
             else:
-                return ["api error : {}".format(err)]
-
+                error = response.status_code
+            raise MicrosoftCalendarClientError("Error code: {}".format(error))
         self.number_retrieved_events += len(events)
         logger.info("{} events retrieved, {} in total".format(len(events), self.number_retrieved_events))
         return events

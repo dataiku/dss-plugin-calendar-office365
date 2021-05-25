@@ -2,7 +2,6 @@
 import dataiku
 import pandas as pd
 import logging
-import requests
 from microsoft_calendar_client import MicrosoftCalendarClient
 
 from dataiku.customrecipe import get_input_names_for_role, get_recipe_config, get_output_names_for_role

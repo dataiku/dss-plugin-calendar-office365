@@ -45,7 +45,7 @@
         {
             "name": "calendar_id_column",
             "label": "Column with Calendar IDs",
-            "description": "If empty, events will be collected from \"primary\" ",
+            "description": "If empty, user's default calendar will be retrieved",
             "type": "COLUMN",
             "columnRole": "input_dataset_name"
         },

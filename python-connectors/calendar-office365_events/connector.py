@@ -27,11 +27,17 @@ class MicrosoftCalendarEventConnector(Connector):
                             partition_id=None, records_limit=-1):
         if not self.calendar_id:
             self.calendar_id = None
-        events = self.client.get_events(
-                from_date=self.from_date,
-                to_date=self.to_date,
-                calendar_id=self.calendar_id
-            )
+
+        events = []
+        first_call = True
+        self.client.reset_next_page_token()
+        while first_call or self.client.has_more_events():
+            first_call = False
+            events.extend(
+                self.client.get_events(from_date=self.from_date,
+                                       to_date=self.to_date,
+                                       calendar_id=self.calendar_id,
+                                       max_results=records_limit))
         for event in events:
             yield {"api_output": event} if self.raw_results else extract_start_end_date(event)
 
@@ -77,18 +83,3 @@ class MicrosoftCalendarEventConnector(Connector):
         in the connector definition
         """
         raise Exception("unimplemented")
-
-
-class CustomDatasetWriter(object):
-    def __init__(self):
-        pass
-
-    def write_row(self, row):
-        """
-        Row is a tuple with N + 1 elements matching the schema passed to get_writer.
-        The last element is a dict of columns not found in the schema
-        """
-        raise Exception("unimplemented")
-
-    def close(self):
-        pass
