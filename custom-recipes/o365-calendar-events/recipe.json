@@ -52,7 +52,8 @@
         {
             "name": "from_date_column",
             "label": "Column with start dates",
-            "description": "Optional",
+            "description": "Mandatory",
+            "required": true,
             "type": "COLUMN",
             "allowedColumnTypes": [
                 "date"
@@ -62,7 +63,8 @@
         {
             "name": "to_date_column",
             "label": "Column with end dates",
-            "description": "Optional",
+            "description": "Mandatory",
+            "required": true,
             "type": "COLUMN",
             "allowedColumnTypes": [
                 "date"

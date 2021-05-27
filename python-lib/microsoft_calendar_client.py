@@ -25,6 +25,7 @@ class MicrosoftCalendarClient():
                 self.base_url = "https://graph.microsoft.com/v1.0/me/calendars/{}/calendarView?startDateTime={}&endDateTime={}".format(calendar_id, from_date, to_date)
             else:
                 self.base_url = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime={}&endDateTime={}".format(from_date, to_date)
+            #self.base_url = "https://graph.microsoft.com/v1.0/me/calendar/2"
         else:
             self.base_url = self.next_page_token
 
@@ -41,12 +42,8 @@ class MicrosoftCalendarClient():
         self.get_next_page_token_if_exist(events_result)
 
         events = events_result.get('value')
-        if response.status_code != 200:
-            if response == 401:
-                error = "Unvalid authentication credentials for the target resource"
-            else:
-                error = response.status_code
-            raise MicrosoftCalendarClientError("Error code: {}".format(error))
+        if response.status_code >= 400:
+            return [events_result]
         self.number_retrieved_events += len(events)
         logger.info("{} events retrieved, {} in total".format(len(events), self.number_retrieved_events))
         return events

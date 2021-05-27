@@ -23,12 +23,14 @@
           "type": "DATE",
           "name": "from_date",
           "label": "From",
+          "required": true,
           "description": "Mandatory"
         },
         {
           "type": "DATE",
           "name": "to_date",
           "label": "To",
+          "required": true,
           "description": "Mandatory"
         },
         {
