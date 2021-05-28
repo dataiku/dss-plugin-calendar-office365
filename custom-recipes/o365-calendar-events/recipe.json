@@ -1,0 +1,84 @@
+
+{
+    "meta": {
+        "label": "Calendar events",
+        "description": "Retrieve events from your Microsoft Office Calendar based on parameters of an existing dataset",
+        "icon": "icon-calendar"
+    },
+    "kind": "PYTHON",
+    "inputRoles": [
+        {
+            "name": "input_dataset_name",
+            "label": "Dataset containing variables",
+            "description": "",
+            "arity": "UNARY",
+            "required": true,
+            "acceptsDataset": true
+        }
+    ],
+
+    "outputRoles": [
+        {
+            "name": "api_output",
+            "label": "Events",
+            "description": "",
+            "arity": "UNARY",
+            "required": true,
+            "acceptsDataset": true
+        }
+    ],
+    "params": [
+        {
+            "type": "SEPARATOR",
+            "label": "Authentication"
+        },
+        {
+            "name": "oauth_credentials",
+            "label": "Google Single Sign On",
+            "type": "PRESET",
+            "parameterSetId": "oauth-credentials"
+        },
+        {
+            "type": "SEPARATOR",
+            "label": "Columns mappings"
+        },
+        {
+            "name": "calendar_id_column",
+            "label": "Column with Calendar IDs",
+            "description": "If empty, user's default calendar will be retrieved",
+            "type": "COLUMN",
+            "columnRole": "input_dataset_name"
+        },
+        {
+            "name": "from_date_column",
+            "label": "Column with start dates",
+            "description": "Mandatory",
+            "required": true,
+            "type": "COLUMN",
+            "allowedColumnTypes": [
+                "date"
+            ],
+            "columnRole": "input_dataset_name"
+        },
+        {
+            "name": "to_date_column",
+            "label": "Column with end dates",
+            "description": "Mandatory",
+            "required": true,
+            "type": "COLUMN",
+            "allowedColumnTypes": [
+                "date"
+            ],
+            "columnRole": "input_dataset_name"
+        },
+        {
+          "type": "INT",
+          "name": "max_results",
+          "label": "Max results",
+          "description": "(Optional)",
+          "defaultValue": -1,
+          "visibilityCondition": false
+        }
+    ],
+    "resourceKeys": []
+}

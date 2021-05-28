@@ -1,0 +1,13 @@
+{
+    "id": "calendar-office365",
+    "version": "0.0.1",
+    "meta": {
+        "label": "Calendar office365",
+        "description": "Retrieve data from your MicrosoftOffice Calendar account",
+        "author": "Dataiku (Vincent Breton)",
+        "icon": "icon-calendar",
+        "tags": ["Microsoft"],
+        "url": "",
+        "licenseInfo": "Apache Software License"
+    }
+}

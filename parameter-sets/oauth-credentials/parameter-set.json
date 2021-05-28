@@ -1,0 +1,27 @@
+{
+    "meta": {
+        "label": "Microsof Office 365 Single Sign On",
+        "description": "",
+        "icon": "icon-calendar"
+    },
+    "defaultDefinableInline": true,
+    "defaultDefinableAtProjectLevel": true,
+    "pluginParams": [
+    ],
+    "params": [
+        {
+            "type": "SEPARATOR",
+            "label": "To be used, this preset will first have to be validated, in Profile > Credentials, once and by each user who needs the access"
+        },
+        {
+            "name": "access_token",
+            "type": "CREDENTIAL_REQUEST",
+            "credentialRequestSettings": {
+                "type": "OAUTH2",
+                "authorizationEndpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+                "tokenEndpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+                "scope": "Calendars.ReadWrite offline_access"
+            }
+        }
+    ]
+}
