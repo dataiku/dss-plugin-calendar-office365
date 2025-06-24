@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "meta": {
         "label": "Calendar office365",
-        "description": "Retrieve data from your Microsoft Office Calendar account. ⚠️ Starting with DSS version 14 this plugin is considered \"deprecated\".",
+        "description": "Retrieve data from your Microsoft Office Calendar account.",
         "author": "Dataiku (Vincent Breton)",
         "icon": "icon-calendar",
         "tags": ["Microsoft"],
