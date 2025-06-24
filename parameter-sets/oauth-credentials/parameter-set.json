@@ -22,6 +22,20 @@
                 "tokenEndpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
                 "scope": "Calendars.ReadWrite offline_access"
             }
+        },
+        {
+            "name": "authorizationEndpoint",
+            "label": "Authorization endpoint",
+            "type": "STRING",
+            "description": "",
+            "mandatory": false
+        },
+        {
+            "name": "tokenEndpoint",
+            "label": "Token endpoint",
+            "type": "STRING",
+            "description": "",
+            "mandatory": false
         }
     ]
 }
