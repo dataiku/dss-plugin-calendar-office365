@@ -1,6 +1,6 @@
 {
     "id": "calendar-office365",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "meta": {
         "label": "Calendar office365",
         "description": "Retrieve data from your Microsoft Office Calendar account.",
