@@ -26,7 +26,7 @@ def assert_no_temporal_paradox(from_date, to_date):
         raise ValueError("The 'To' and/or 'From' dates are missing")
 
 def get_datetime_from_iso_string(iso_string):
-    return datetime.datetime.strptime(iso_string, "%Y-%m-%dT%H:%M:%S.%fZ")
+    return datetime.datetime.strptime(iso_string, "%Y-%m-%d")
 
 def extract_start_end_date(event):
     start = event.pop("start", None)
