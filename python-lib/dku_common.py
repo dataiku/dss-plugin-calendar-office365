@@ -1,6 +1,7 @@
 import pandas
 import datetime
 
+
 def get_token_from_config(config):
     oauth_credentials = config.get("oauth_credentials")
     if not oauth_credentials:
