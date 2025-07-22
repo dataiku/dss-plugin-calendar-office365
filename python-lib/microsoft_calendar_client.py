@@ -1,5 +1,6 @@
 import logging
 import requests
+from urllib.parse import quote
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO,
@@ -22,9 +23,9 @@ class MicrosoftCalendarClient():
     def build_url(self, from_date, to_date, calendar_id):
         if not self.next_page_token:
             if isinstance(calendar_id, str):
-                self.base_url = "https://graph.microsoft.com/v1.0/me/calendars/{}/calendarView?startDateTime={}&endDateTime={}".format(calendar_id, from_date, to_date)
+                self.base_url = "https://graph.microsoft.com/v1.0/me/calendars/{}/calendarView?startDateTime={}&endDateTime={}".format(calendar_id, quote(from_date), quote(to_date))
             else:
-                self.base_url = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime={}&endDateTime={}".format(from_date, to_date)
+                self.base_url = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime={}&endDateTime={}".format(quote(from_date), quote(to_date))
             #self.base_url = "https://graph.microsoft.com/v1.0/me/calendar/2"
         else:
             self.base_url = self.next_page_token
