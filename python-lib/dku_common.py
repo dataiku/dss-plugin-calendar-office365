@@ -14,7 +14,7 @@ def get_token_from_config(config):
 def get_iso_format(panda_date):
     if pandas.isnull(panda_date):
         return None
-    return panda_date.isoformat()
+    return panda_date.isoformat() + "Z"
 
 
 def assert_no_temporal_paradox(from_date, to_date):
@@ -27,7 +27,7 @@ def assert_no_temporal_paradox(from_date, to_date):
         raise ValueError("The 'To' and/or 'From' dates are missing")
 
 def get_datetime_from_iso_string(iso_string):
-    return datetime.datetime.strptime(iso_string, "%Y-%m-%d")
+    return datetime.datetime.strptime(iso_string, "%Y-%m-%dT%H:%M:%S.%fZ")
 
 def extract_start_end_date(event):
     start = event.pop("start", None)
