@@ -8,3 +8,6 @@
 .htmlcov
 .DS_Store
 .idea
+tests/allure_report
+tests/python/integration/env
+dist/

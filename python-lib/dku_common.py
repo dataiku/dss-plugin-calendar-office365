@@ -1,6 +1,7 @@
 import pandas
 import datetime
 
+
 def get_token_from_config(config):
     oauth_credentials = config.get("oauth_credentials")
     if not oauth_credentials:
@@ -13,7 +14,7 @@ def get_token_from_config(config):
 def get_iso_format(panda_date):
     if pandas.isnull(panda_date):
         return None
-    return panda_date.isoformat() + "Z"
+    return panda_date.isoformat()
 
 
 def assert_no_temporal_paradox(from_date, to_date):
