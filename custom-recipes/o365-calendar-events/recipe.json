@@ -34,7 +34,7 @@
         },
         {
             "name": "oauth_credentials",
-            "label": "Google Single Sign On",
+            "label": "Microsoft Single Sign On",
             "type": "PRESET",
             "parameterSetId": "oauth-credentials"
         },
