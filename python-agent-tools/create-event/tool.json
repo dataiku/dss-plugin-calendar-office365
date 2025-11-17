@@ -1,0 +1,21 @@
+{
+    "meta" : {
+        "label": "Create Office 365 Calendar Event",
+        "description": "Create an Office 365 Calendar Event from user input",
+        "icon": "icon-calendar"
+    },
+    "params": [
+        {
+            "name": "oauth_credentials",
+            "label": "Microsoft Single Sign On",
+            "type": "PRESET",
+            "parameterSetId": "oauth-credentials"
+        },
+        {
+          "type": "STRING",
+          "name": "calendar_id",
+          "label": "Calendar ID",
+          "defaultValue": ""
+        }
+    ]
+}

@@ -51,3 +51,36 @@ class MicrosoftCalendarClient():
 
     def has_more_events(self):
         return self.next_page_token is not None
+
+    def create_event(self, from_date, to_date, subject, content, location, attendees_emails):
+        json = {
+            "subject": subject,
+            "body": {
+                "contentType": "HTML",
+                "content": content
+            },
+            "start": {
+                "dateTime": from_date
+            },
+            "end": {
+                "dateTime": to_date
+            },
+            "location": {
+                "displayName": location
+            }
+        }
+        attendees = []
+        for attende_email in attendees_emails:
+            attendees.append(
+                {
+                    "emailAddress": {
+                        "address": attende_email,
+                    }
+                }
+            )
+        if attendees:
+            json["attendees"] = attendees
+        url = "https://graph.microsoft.com/v1.0/me/calendars"
+
+        response = requests.post(url, json=json)
+        return response.json()
