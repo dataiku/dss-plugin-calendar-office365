@@ -55,7 +55,7 @@ class CustomAgentTool(BaseAgentTool):
         description = args["description"]
         start = args["start"]
         end = args["end"]
-        attendees_emails = args["attendees_emails"]
+        attendees_emails = args["attendees"]
         location = args["location"]
 
         '''
@@ -92,8 +92,7 @@ class CustomAgentTool(BaseAgentTool):
         }
         '''
         attendees_emails = attendees_emails.split(",")
-        response = self.client.create_event(start, end, subject, description, location, attendees_emails)
-        json_response = response.json()
+        json_response = self.client.create_event(start, end, subject, description, location, attendees_emails)
         web_link = json_response.get("webLink")
         if web_link:
             return {
@@ -101,7 +100,7 @@ class CustomAgentTool(BaseAgentTool):
             }
         else:
             return {
-                "output": "There was an issue while creating the event."
+                "output": "There was an issue while creating the event. {}".format(json_response)
             }
 
 

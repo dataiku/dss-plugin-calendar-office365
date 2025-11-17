@@ -60,10 +60,12 @@ class MicrosoftCalendarClient():
                 "content": content
             },
             "start": {
-                "dateTime": from_date
+                "dateTime": from_date,
+                "timeZone": "UTC"
             },
             "end": {
-                "dateTime": to_date
+                "dateTime": to_date,
+                "timeZone": "UTC"
             },
             "location": {
                 "displayName": location
@@ -80,7 +82,7 @@ class MicrosoftCalendarClient():
             )
         if attendees:
             json["attendees"] = attendees
-        url = "https://graph.microsoft.com/v1.0/me/calendars"
+        url = "https://graph.microsoft.com/v1.0/me/calendar/events"
 
-        response = requests.post(url, json=json)
+        response = requests.post(url, headers=self.headers, json=json)
         return response.json()
