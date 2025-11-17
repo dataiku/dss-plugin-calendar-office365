@@ -49,6 +49,16 @@ class CustomAgentTool(BaseAgentTool):
             }
         }
 
+    def load_sample_query(self, tool):
+        return {
+            "subject": "The subject or title of the event",
+            "description": "The description of the event",
+            "location": "The location of the event",
+            "attendees": "Comma separated string of the attendees email addresses",
+            "start": "The RFC3339 timestamp of the event's start date and time",
+            "end": "The RFC3339 timestamp of the event's end date and time"
+        }
+
     def invoke(self, input, trace):
         args = input["input"]
         subject = args["subject"]
