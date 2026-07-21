@@ -1,13 +1,15 @@
 {
-    "id": "calendar-office365",
-    "version": "0.0.2",
-    "meta": {
-        "label": "Calendar office365",
-        "description": "Retrieve data from your Microsoft Office Calendar account.",
-        "author": "Dataiku (Vincent Breton)",
-        "icon": "icon-calendar",
-        "tags": ["Microsoft"],
-        "url": "https://www.dataiku.com/product/plugins/calendar-office365/",
-        "licenseInfo": "Apache Software License"
-    }
+  "id": "calendar-office365",
+  "version": "0.1.0",
+  "meta": {
+    "label": "Calendar office365",
+    "description": "Retrieve data from your Microsoft Office Calendar account.",
+    "author": "Dataiku (Vincent Breton)",
+    "icon": "icon-calendar",
+    "tags": [
+      "Microsoft"
+    ],
+    "url": "https://www.dataiku.com/product/plugins/calendar-office365/",
+    "licenseInfo": "Apache Software License"
+  }
 }
