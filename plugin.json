@@ -6,7 +6,10 @@
     "description": "Retrieve data from your Microsoft Office Calendar account.",
     "author": "Dataiku (Vincent Breton)",
     "icon": "icon-calendar",
+    "category": "Productivity",
     "tags": [
+      "Connector",
+      "Productivity",
       "Microsoft"
     ],
     "url": "https://www.dataiku.com/product/plugins/calendar-office365/",
