@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.1.0 - Enhancement release - 2026-10-21
+
+- Added supported Python versions: 3.12, 3.13, 3.14
+- Makefile cleanup: release_info.json lines removed
+- Added category and updated tags
+
 ## [Version 0.0.2](https://github.com/dataiku/dss-plugin-calendar-office365/releases/tag/v0.0.2) - Bugfix release - 2025-06
 
 - Updated code-env descriptor for DSS 12
